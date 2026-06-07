@@ -1,0 +1,17 @@
+site_name: EmBuddy Docs
+
+theme:
+  name: material
+
+plugins:
+  - search
+  - mkdocstrings
+
+nav:
+  - Usage: index.md
+  - API Reference: api.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed
