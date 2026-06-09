@@ -1,0 +1,36 @@
+/**
+ * EmBuddy theme — indigo-to-teal, tuned for both light and dark modes.
+ * Only global theme variables and minor global tweaks live here.
+ * Component-specific styles live in scoped *.module.css files.
+ * Infima variables: https://docusaurus.io/docs/styling-layout
+ */
+
+:root {
+  --ifm-color-primary: #4f46e5;
+  --ifm-color-primary-dark: #443fcf;
+  --ifm-color-primary-darker: #403cc4;
+  --ifm-color-primary-darkest: #3531a1;
+  --ifm-color-primary-light: #5e57e8;
+  --ifm-color-primary-lighter: #6963ea;
+  --ifm-color-primary-lightest: #837eee;
+  --ifm-code-font-size: 95%;
+  --ifm-font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.12);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #818cf8;
+  --ifm-color-primary-dark: #6371f6;
+  --ifm-color-primary-darker: #5365f5;
+  --ifm-color-primary-darkest: #2b41f2;
+  --ifm-color-primary-light: #9fa7fa;
+  --ifm-color-primary-lighter: #afb6fb;
+  --ifm-color-primary-lightest: #dfe2fd;
+  --ifm-background-color: #0e1117;
+  --docusaurus-highlighted-code-line-bg: rgba(129, 140, 248, 0.18);
+}
+
+.markdown table {
+  display: table;
+  width: 100%;
+}
