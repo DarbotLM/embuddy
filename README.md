@@ -1,7 +1,9 @@
 # EmBuddy
 
-`embuddy` is a package that helps with using text embeddings for local data analysis — cached
-embeddings, approximate-nearest-neighbor search, and UMAP projection, all from a single object.
+EmBuddy is the embedding framework for **architecture intelligence**. It turns the unstructured
+text of a system — code, docs, design notes, decision records — into cached embeddings you can
+search by meaning, project into spatial maps, and feed into knowledge graphs. Cached embeddings,
+approximate-nearest-neighbor search, and UMAP projection, all from a single object.
 
 **Documentation:** https://darbotlm.github.io/embuddy/
 

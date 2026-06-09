@@ -17,9 +17,9 @@ NVIDIA's API). EmBuddy slots in alongside them as a provider that adds a server-
 ANN index, and a UMAP projection on top of SentenceTransformers.
 
 ```
-3DKG pipeline ──▶ EmBuddy service (HTTP) ──▶ embeddings / ANN / UMAP
-                       │
-                       └─ wraps the EmBuddy Python package
+3DKG pipeline --> EmBuddy service (HTTP) --> embeddings / ANN / UMAP
+                       |
+                       \-- wraps the EmBuddy Python package
 ```
 
 ## The EmBuddy service
@@ -43,7 +43,7 @@ multi-document limitation discussed on the [Roadmap](../roadmap.md).
 
 EmBuddy can be chosen as the embeddings provider in three ways:
 
-- **UI** — Settings → Embeddings Provider → *EmBuddy*.
+- **UI** — Settings &gt; Embeddings Provider &gt; *EmBuddy*.
 - **Environment** — set `EMBEDDINGS_PROVIDER=embuddy` and `EMBUDDY_BASE_URL`.
 - **Core JS pipeline** — pass an `embuddy` config:
 

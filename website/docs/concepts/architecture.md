@@ -11,9 +11,9 @@ EmBuddy is intentionally small. The entire public surface is one class and two e
 
 ```
 src/embuddy/
-├── __init__.py     # exports EmBuddy and __version__
-├── core.py         # the EmBuddy class + helper functions
-└── errors.py       # IndexNotBuiltError, NNDescentHyperplaneError
+  __init__.py     # exports EmBuddy and __version__
+  core.py         # the EmBuddy class + helper functions
+  errors.py       # IndexNotBuiltError, NNDescentHyperplaneError
 ```
 
 - **`core.py`** holds the `EmBuddy` class and two private helpers,
@@ -41,14 +41,14 @@ last built; this drives the [staleness warning](../guides/nearest-neighbors.md#k
 ## Data flow
 
 ```
-text ──embed()──▶ embedding_cache (+ doc_cache)
-                        │
-                        ├──build_ann_index()──▶ ann ──nearest_neighbors()──▶ results
-                        │                            └─nearest_neighbors_vector()
-                        │
-                        └──build_umap()──▶ umap_embeddings
-                        │
-                        └──save()/load()──▶ on-disk .emb directory
+text --embed()--> embedding_cache (+ doc_cache)
+                        |
+                        +-- build_ann_index() --> ann --nearest_neighbors()-------> results
+                        |                              \-- nearest_neighbors_vector()
+                        |
+                        +-- build_umap() --------> umap_embeddings
+                        |
+                        \-- save() / load() -----> on-disk .emb directory
 ```
 
 The cache is the hub: embedding fills it, and the ANN index and UMAP projection are both derived

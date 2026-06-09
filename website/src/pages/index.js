@@ -31,14 +31,32 @@ function HomepageHeader() {
   );
 }
 
+function HomepageIntro() {
+  return (
+    <section className={styles.intro}>
+      <div className="container">
+        <p className={styles.introLead}>
+          EmBuddy turns the unstructured text of a system — source code,
+          documentation, design notes, and decision records — into cached
+          embeddings you can search by meaning, project into spatial maps, and
+          feed into knowledge graphs. It is the embedding layer beneath
+          architecture intelligence: a small, local-first foundation that makes
+          a codebase legible to both people and agents.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title} · Text embeddings for local data analysis`}
-      description="EmBuddy is a Python package for using text embeddings for local data analysis: cached embeddings, approximate-nearest-neighbor search, and UMAP projection.">
+      title={`${siteConfig.title} · The embedding framework for architecture intelligence`}
+      description="EmBuddy is the embedding engine for architecture intelligence: turn a system's code, docs, and design artifacts into cached embeddings with approximate-nearest-neighbor search, UMAP projection, and knowledge-graph-ready output.">
       <HomepageHeader />
       <main>
+        <HomepageIntro />
         <HomepageFeatures />
       </main>
     </Layout>

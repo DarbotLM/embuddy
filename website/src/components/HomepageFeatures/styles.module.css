@@ -24,7 +24,6 @@
 }
 
 .featureIcon {
-  font-size: 1.6rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -32,5 +31,11 @@
   height: 3rem;
   border-radius: 10px;
   margin-bottom: 1rem;
+  color: var(--ifm-color-primary);
   background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(20, 184, 166, 0.15));
+}
+
+.featureIcon svg {
+  width: 1.6rem;
+  height: 1.6rem;
 }

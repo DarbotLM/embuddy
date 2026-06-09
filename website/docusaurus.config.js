@@ -7,7 +7,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'EmBuddy',
-  tagline: 'Text embeddings for local data analysis — cache, search, and project, all in one buddy.',
+  tagline: 'The embedding framework for architecture intelligence.',
   favicon: 'img/favicon.svg',
 
   future: {

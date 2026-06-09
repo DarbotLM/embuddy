@@ -25,6 +25,7 @@ const sidebars = {
       label: 'Concepts',
       collapsed: false,
       items: [
+        'concepts/architecture-intelligence',
         'concepts/architecture',
         'concepts/caching',
         'concepts/ann-and-umap',
