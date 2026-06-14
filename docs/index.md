@@ -6,7 +6,7 @@ EmBuddy currently supports [models](https://www.sbert.net/docs/pretrained_models
 
 ## Usage
 
-We"ll look at a basic workflow with data from HappyDB.
+We'll look at a basic workflow with data from HappyDB.
 
 ```python
 import pandas as pd
