@@ -13,7 +13,7 @@ def embuddy_sm():
 
 
 def test_version():
-    assert __version__ == "0.1.1"
+    assert __version__ == "0.2.0"
 
 
 def test_array(embuddy_sm):
@@ -119,6 +119,8 @@ def test_nn_vector(faker, embuddy_sm):
     k = 10
     neighbors = embuddy_sm.nearest_neighbors_vector(query_vector, k=k)
     assert len(neighbors[0]) == k
+    assert len(embuddy_sm.nearest_neighbors_vector(embeddings[:2], k=k)) == 2
+    assert len(embuddy_sm.nearest_neighbors(texts[:2], k=k)) == 2
 
 
 def test_nndescent_hyperplane_exception(embuddy_sm):
@@ -158,4 +160,5 @@ def test_umap_persist(tmp_path, faker, embuddy_sm):
 
     emb2 = EmBuddy.load(path)
     umap2 = emb2.umap_embeddings
+    assert isinstance(umap2, np.ndarray)
     assert np.array_equal(umap1, umap2)

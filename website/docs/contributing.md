@@ -9,13 +9,13 @@ Contributions are welcome. EmBuddy is small, so it is easy to get started.
 
 ## Development setup
 
-EmBuddy uses [Poetry](https://python-poetry.org/) and targets Python `>=3.8,<3.10`.
+EmBuddy uses [Poetry 2](https://python-poetry.org/) and targets Python `>=3.14,<3.15`.
 
 ```bash
 git clone https://github.com/DarbotLM/embuddy
 cd embuddy
+poetry env use python3.14
 poetry install      # installs runtime + dev dependencies
-poetry shell        # activate the environment
 ```
 
 ## Running the tests
@@ -23,13 +23,13 @@ poetry shell        # activate the environment
 The suite uses `pytest` (with `Faker` for fixture text):
 
 ```bash
-pytest
+poetry run pytest
 ```
 
 With coverage:
 
 ```bash
-pytest --cov=embuddy --cov-report=term-missing
+poetry run pytest --cov=embuddy --cov-report=term-missing
 ```
 
 ## Code style

@@ -7,8 +7,9 @@ description: How to install EmBuddy and its dependencies.
 
 ## Requirements
 
-EmBuddy targets **Python `>=3.8,<3.10`**. This constraint comes from the underlying numerical
-stack (Numba/UMAP pins) and is tracked for relaxation on the [Roadmap](./roadmap.md).
+EmBuddy 0.2 targets **Python `>=3.14,<3.15`** with current SentenceTransformers,
+NumPy, Numba, and Zarr 3. Existing Zarr 2 stores remain readable; new stores use
+Zarr 3. ANN files use joblib/pickle, so load only trusted artifacts.
 
 Core runtime dependencies (installed automatically):
 
@@ -47,10 +48,12 @@ cd embuddy
 poetry install
 ```
 
-Then activate the environment:
+Select Python 3.14 before installing, and run commands through Poetry 2:
 
 ```bash
-poetry shell
+poetry env use python3.14
+poetry install
+poetry run pytest
 ```
 
 ## Verify the installation

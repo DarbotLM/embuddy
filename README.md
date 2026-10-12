@@ -15,7 +15,17 @@ EmBuddy is not yet on PyPI. Install it directly from GitHub:
 pip install git+https://github.com/DarbotLM/embuddy
 ```
 
-EmBuddy targets Python `>=3.8,<3.10`.
+EmBuddy targets Python `>=3.14,<3.15`, with current SentenceTransformers,
+NumPy, Numba, and Zarr 3. Existing Zarr 2 stores remain readable; new stores
+use Zarr 3. Load only trusted ANN index files because joblib uses pickle.
+
+For development, use Poetry 2 with a Python 3.14 interpreter:
+
+```bash
+poetry env use python3.14
+poetry install
+poetry run pytest
+```
 
 ## Quick example
 

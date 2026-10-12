@@ -26,13 +26,19 @@ class EmBuddy:
         self.model: SentenceTransformer = SentenceTransformer(model_name)
         self.doc_cache: List[str] = []
         self.embedding_cache: np.ndarray = np.empty(
-            shape=(0, self.model.get_sentence_embedding_dimension())
+            shape=(0, self.model.get_embedding_dimension()),
+            dtype=np.float32,
         )
         self.ann: Optional[NNDescent] = None
         self.umap_embeddings: Optional[np.ndarray] = None
         self._last_built_len: int = 0
 
-    def embed(self, docs: Union[str, List[str]], cache: bool = True, show_progress_bar: bool = True) -> np.ndarray:
+    def embed(
+        self,
+        docs: Union[str, List[str]],
+        cache: bool = True,
+        show_progress_bar: bool = True,
+    ) -> np.ndarray:
         """Embed documents.
 
         Args:
@@ -48,18 +54,20 @@ class EmBuddy:
 
         if cache:
             result = np.empty(
-                shape=(len(docs), self.model.get_sentence_embedding_dimension()),
+                shape=(len(docs), self.model.get_embedding_dimension()),
                 dtype=np.float32,
             )
-            uncached_docs = list(set([d for d in docs if d not in self.doc_cache]))
+            uncached_docs = list(
+                dict.fromkeys(d for d in docs if d not in self.doc_cache)
+            )
             if uncached_docs:
-                self.doc_cache.extend(uncached_docs)
                 uncached_embeddings = self.model.encode(
                     uncached_docs, show_progress_bar=show_progress_bar
                 )
                 self.embedding_cache = np.append(
                     self.embedding_cache, uncached_embeddings, axis=0
                 )
+                self.doc_cache.extend(uncached_docs)
                 for i, doc in enumerate(docs):
                     if doc in uncached_docs:
                         result[i] = uncached_embeddings[uncached_docs.index(doc)]
@@ -95,12 +103,15 @@ class EmBuddy:
         if isinstance(path, str):
             path = Path(path)
 
-        g = zarr.group(store=str(path), overwrite=overwrite)
+        g = zarr.open_group(store=str(path), mode="w" if overwrite else "w-")
         g.attrs["model_name"] = self.model_name
-        g.create_dataset(name="embeddings", data=self.embedding_cache)
-        g.create_dataset(name="docs", data=self.doc_cache, dtype=str)
+        g.attrs["last_built_len"] = self._last_built_len
+        g.create_array(name="embeddings", data=self.embedding_cache)
+        g.create_array(
+            name="docs", data=np.asarray(self.doc_cache, dtype=np.dtypes.StringDType())
+        )
         if self.umap_embeddings is not None:
-            g.create_dataset(name="umap_embeddings", data=self.umap_embeddings)
+            g.create_array(name="umap_embeddings", data=self.umap_embeddings)
         if self.ann is not None:
             joblib.dump(self.ann, str(path / "ann_index.zstd"), compress=("zstd", 5))
         return g
@@ -115,16 +126,19 @@ class EmBuddy:
         if isinstance(path, str):
             path = Path(path)
 
-        g = zarr.open_group(str(path))
+        g = zarr.open_group(str(path), mode="r")
         model_name = g.attrs["model_name"]
         embuddy = EmBuddy(model_name)
-        embuddy.doc_cache = list(g["docs"])
+        embuddy.doc_cache = g["docs"][:].tolist()
         embuddy.embedding_cache = g["embeddings"][:]
         umap_check = g.get("umap_embeddings")
-        if umap_check:
-            embuddy.umap_embeddings = g["umap_embeddings"]
+        if umap_check is not None:
+            embuddy.umap_embeddings = g["umap_embeddings"][:]
         if (path / "ann_index.zstd").exists():
             embuddy.ann = joblib.load(str(path / "ann_index.zstd"))
+            embuddy._last_built_len = g.attrs.get(
+                "last_built_len", len(embuddy.doc_cache)
+            )
         return embuddy
 
     def build_ann_index(
@@ -139,6 +153,10 @@ class EmBuddy:
         Raises:
             NNDescentHyperplaneError: If ANN can't be built due to small data.
         """
+        if len(self.doc_cache) < 3:
+            raise NNDescentHyperplaneError(
+                "At least three cached documents are required to build an ANN index."
+            )
         nndescent_kwargs = _build_nndescent_kwargs_dict(nndescent_kwargs)
         nndescent_kwargs["n_neighbors"] = (
             10 if len(self.doc_cache) < 60 else nndescent_kwargs["n_neighbors"]
@@ -191,7 +209,7 @@ class EmBuddy:
         if isinstance(docs, str):
             docs = [docs]
 
-        query_data = self.embed(docs, cache=False).reshape(1, -1)
+        query_data = np.atleast_2d(self.embed(docs, cache=False))
         neighbors, distances = self.ann.query(query_data, k=k)
 
         result = []
@@ -200,7 +218,7 @@ class EmBuddy:
             neighbor_docs = [self.doc_cache[ix] for ix in neighbor_ix]
             neighbor_dist = distances[i]
             doc_result = []
-            for (ix, doc, dist) in zip(neighbor_ix, neighbor_docs, neighbor_dist):
+            for ix, doc, dist in zip(neighbor_ix, neighbor_docs, neighbor_dist):
                 doc_result.append((ix, doc, dist))
             result.append(doc_result)
         return result
@@ -240,7 +258,7 @@ class EmBuddy:
                 "You are not querying all embeddings. You can rebuild the ANN "
                 "index with `build_ann_index`."
             )
-        query_vector = query_vector.reshape(1, -1)
+        query_vector = np.atleast_2d(query_vector)
 
         neighbors, distances = self.ann.query(query_vector, k=k)
 
@@ -275,7 +293,7 @@ class EmBuddy:
 
 
 def _build_umap_kwargs_dict(
-    umap_kwargs: Optional[Dict[str, Any]] = None
+    umap_kwargs: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     defaults = {
         "n_neighbors": 15,
@@ -288,7 +306,7 @@ def _build_umap_kwargs_dict(
 
 
 def _build_nndescent_kwargs_dict(
-    nndescent_kwargs: Optional[Dict[str, Any]]
+    nndescent_kwargs: Optional[Dict[str, Any]],
 ) -> Dict[str, Any]:
     """Helper function for creating default NNDescent kwargs.
 
