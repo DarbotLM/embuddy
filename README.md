@@ -17,7 +17,9 @@ pip install git+https://github.com/DarbotLM/embuddy
 
 EmBuddy targets Python `>=3.14,<3.15`, with current SentenceTransformers,
 NumPy, Numba, and Zarr 3. Existing Zarr 2 stores remain readable; new stores
-use Zarr 3. Load only trusted ANN index files because joblib uses pickle.
+use Zarr 3. ANN pickle indexes are version-sensitive; rebuild them from stored
+vectors after upgrading the ML stack. Load only trusted ANN index files because
+joblib uses pickle.
 
 For development, use Poetry 2 with a Python 3.14 interpreter:
 

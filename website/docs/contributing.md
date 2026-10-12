@@ -68,7 +68,6 @@ The site deploys automatically to GitHub Pages when changes under `website/` lan
 ## Good first contributions
 
 From the [Roadmap](./roadmap.md), several issues are self-contained and well-scoped — for
-example storing `embedding_cache` as `float32`
-([#8](https://github.com/DarbotLM/embuddy/issues/8)), forwarding `show_progress_bar` from
-`__call__` ([#5](https://github.com/DarbotLM/embuddy/issues/5)), or adding a multi-document
-nearest-neighbors test ([#17](https://github.com/DarbotLM/embuddy/issues/17)).
+example forwarding `show_progress_bar` from `__call__`
+([#5](https://github.com/DarbotLM/embuddy/issues/5)) or improving cache lookup
+performance ([#7](https://github.com/DarbotLM/embuddy/issues/7)).

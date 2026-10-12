@@ -37,7 +37,6 @@ Everything else in the [Quickstart](./quickstart.md) works as documented.
 | --- | --- | --- |
 | [#5](https://github.com/DarbotLM/embuddy/issues/5) | Correctness | `__call__` does not forward `show_progress_bar`. |
 | [#6](https://github.com/DarbotLM/embuddy/issues/6) | Correctness | Inner loop variable shadows the `enumerate` target in the search methods. |
-| [#8](https://github.com/DarbotLM/embuddy/issues/8) | Performance | `embedding_cache` is stored as `float64` while the model emits `float32` (2x storage). |
 | [#10](https://github.com/DarbotLM/embuddy/issues/10) | Architecture | The caches are not thread-safe. |
 | [#14](https://github.com/DarbotLM/embuddy/issues/14) | Packaging | No CI workflow for tests, lint, or type-checking. |
 | [#15](https://github.com/DarbotLM/embuddy/issues/15) | Packaging | Not yet published to PyPI. |
@@ -50,7 +49,8 @@ Everything else in the [Quickstart](./quickstart.md) works as documented.
 
 - Version 0.2 resolves the Python/runtime, dependency-group, and version consistency
   items (#2, #11, #12, #13), migrates persistence to Zarr 3, materializes loaded
-  UMAP arrays (#4), and preserves batched query dimensions (#1, #3).
+  UMAP arrays (#4), preserves batched query dimensions (#1, #3), and initializes
+  embedding caches as float32 (#8).
 
 - [#16](https://github.com/DarbotLM/embuddy/issues/16) — the repository description was corrected
   to describe EmBuddy as an embeddings library (it briefly read otherwise).
