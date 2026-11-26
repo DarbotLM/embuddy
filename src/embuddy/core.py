@@ -258,7 +258,13 @@ class EmBuddy:
                 "You are not querying all embeddings. You can rebuild the ANN "
                 "index with `build_ann_index`."
             )
-        query_vector = np.atleast_2d(query_vector)
+        query_vector = np.asarray(query_vector)
+        if query_vector.ndim == 1:
+            query_vector = query_vector.reshape(1, -1)
+        elif query_vector.ndim != 2:
+            raise ValueError(
+                "`query_vector` must be a 1D vector or a 2D array of vectors."
+            )
 
         neighbors, distances = self.ann.query(query_vector, k=k)
 

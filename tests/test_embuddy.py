@@ -119,8 +119,18 @@ def test_nn_vector(faker, embuddy_sm):
     k = 10
     neighbors = embuddy_sm.nearest_neighbors_vector(query_vector, k=k)
     assert len(neighbors[0]) == k
-    assert len(embuddy_sm.nearest_neighbors_vector(embeddings[:2], k=k)) == 2
+    batch_neighbors = embuddy_sm.nearest_neighbors_vector(embeddings[:2], k=k)
+    assert len(batch_neighbors) == 2
+    assert all(len(doc_neighbors) == k for doc_neighbors in batch_neighbors)
     assert len(embuddy_sm.nearest_neighbors(texts[:2], k=k)) == 2
+
+
+def test_nn_vector_invalid_dimensions(faker, embuddy_sm):
+    texts = faker.texts(nb_texts=61, max_nb_chars=100)
+    embuddy_sm.embed(texts)
+    embuddy_sm.build_ann_index()
+    with pytest.raises(ValueError):
+        embuddy_sm.nearest_neighbors_vector(np.ones((2, 3, 4)))
 
 
 def test_nndescent_hyperplane_exception(embuddy_sm):
