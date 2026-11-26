@@ -60,10 +60,9 @@ The same rules as text search apply:
 - If the cache has grown since the index was built, EmBuddy emits a staleness `UserWarning`.
   Rebuild with `build_ann_index()` to include new documents.
 
-:::note Single vector per call
-`nearest_neighbors_vector` is designed and tested for a single query vector. Pass a 1D array
-(or a single-row 2D array); the method reshapes it to one row internally. See the
-[Roadmap](../roadmap.md) for planned multi-vector support.
+:::note Multi-vector support
+`nearest_neighbors_vector` accepts either a single 1D query vector or a 2D array of query
+vectors. It returns one neighbors list per input vector.
 :::
 
 ## Related

@@ -191,11 +191,11 @@ over a group of documents.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `query_vector` | `np.ndarray` | — | A single query vector (1D, or a single-row 2D array). |
+| `query_vector` | `np.ndarray` | — | A 1D query vector, or a 2D array of query vectors. |
 | `k` | `int` | `10` | Number of neighbors to return. |
 
-**Returns** — same shape as [`nearest_neighbors`](#nearest_neighbors): a list with one entry
-holding `(index, document, distance)` tuples sorted nearest-first.
+**Returns** — same shape as [`nearest_neighbors`](#nearest_neighbors): one list per input vector,
+each holding `(index, document, distance)` tuples sorted nearest-first.
 
 **Raises** — [`IndexNotBuiltError`](./errors.md) if the index has not been built. Emits a
 `UserWarning` if the cache is stale relative to the index.
